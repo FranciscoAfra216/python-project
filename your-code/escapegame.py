@@ -1,5 +1,6 @@
 # function import from contributors
 from franciscoafra import coin_toss
+import random
 
 lives = []
 # define rooms, items and humans/animals
@@ -210,6 +211,7 @@ INIT_GAME_STATE = {
 }
 
 
+
 def linebreak():
     """
     Print a line break
@@ -250,6 +252,25 @@ def play_room(room):
             play_room(room)
         linebreak()
 
+def coin_toss():
+    player_choice = input("It's time to flip a coin!\nChoose heads or tails?")
+    player_choice = player_choice.lower()
+    while player_choice != "heads" and player_choice != "tails":
+        player_choice = input("Please, pick heads or tails!")
+        player_choice = player_choice.lower()
+
+    coinflip = random.choice(["heads", "tails"])
+    print("You picked", player_choice + ".")
+    print("Alright, let's flip it!\n")
+    print("You were so scared. That you see the coin flipping in slow motion!\n")
+    print("The coin showed", coinflip+"!\n")
+
+    if player_choice == coinflip:
+        print("Good job, here is the key e!")
+        return key_e
+
+    else:
+        print("Sadly, You guessed wrong!\n")
 
 def explore_room(room):
     """
@@ -287,12 +308,15 @@ def talk_to(someone):
             play_room(current_room)
     for live in living_being[current_room["name"]]:
         if live["name"] == someone:
-            output = "You try interact with " + someone + ". "
+            output = "You say Hi to " + someone + ". "
             print(output)
             if live["riddle"] == "flip coin":
-                coin_toss()
-                if coin_toss() == key_e:
+                success = coin_toss()
+                if success == key_e:
                     game_state["keys_collected"].append(key_e)
+                    play_room(current_room)
+                else:
+                    play_room(current_room)
             elif live["riddle"] == "none":
                 output = "I have no riddles for you"
                 print(output)
@@ -357,5 +381,5 @@ def examine_item(item_name):
 
 game_state = INIT_GAME_STATE.copy()
 
-start_game()
+play_room(entrance_hall)
 
