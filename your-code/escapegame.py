@@ -319,8 +319,8 @@ def explore_room(room):
     """
     Explore a room. List all items belonging to this room.
     """
-    items = [i["name"] for i in object_relations[room["name"]]]
     lives = [i["name"] for i in living_being[room["name"]]]
+    items = [i["name"] for i in object_relations[room["name"]]]
     print("\nYou explore the room. This is " + room["name"], "\nYou find:\n",", ".join(lives),"\n",", ".join(items))
 
 
@@ -331,7 +331,7 @@ def get_next_room_of_door(door, current_room):
     """
     connected_rooms = object_relations[door["name"]]
     for room in connected_rooms:
-        if (not current_room == room):
+        if not current_room == room:
             return room
 
 
@@ -345,7 +345,7 @@ def talk_to(someone):
     output = None
 
     for item in object_relations[current_room["name"]]:
-        if (item["name"] == someone):
+        if item["name"] == someone:
             output = "You stare at " + someone + ". After 1 hour staring you see it's lifeless "
             print(output)
             play_room(current_room)
@@ -380,12 +380,12 @@ def talk_to(someone):
                     play_room(current_room)
 
             elif live["riddle"] == "none":
-                output = someone +" says:" + " I have no riddles for you"
+                output = someone + " says:" + " I have no riddles for you"
                 print(output)
                 play_room(current_room)
             break
 
-    if (output is None):
+    if output is None:
         print("The one you requested is not found in the current room.")
         play_room(current_room)
 
@@ -405,25 +405,25 @@ def examine_item(item_name):
     next_room = ""
     output = None
     for live in living_being[current_room["name"]]:
-        if (live["name"] == item_name):
+        if live["name"] == item_name:
             output = "You stare at " + item_name + ". Nothing happens..."
             print(output)
 
     for item in object_relations[current_room["name"]]:
-        if (item["name"] == item_name):
+        if item["name"] == item_name:
             output = "You examine " + item_name + ". "
-            if (item["type"] == "door"):
+            if item["type"] == "door":
                 have_key = False
                 for key in game_state["keys_collected"]:
-                    if (key["target"] == item):
+                    if key["target"] == item:
                         have_key = True
-                if (have_key):
+                if have_key:
                     output += "You unlock it with a key you have."
                     next_room = get_next_room_of_door(item, current_room)
                 else:
                     output += "It is locked but you don't have the key."
             else:
-                if (item["name"] in object_relations and len(object_relations[item["name"]]) > 0):
+                if item["name"] in object_relations and len(object_relations[item["name"]]) > 0:
                     item_found = object_relations[item["name"]].pop()
                     game_state["keys_collected"].append(item_found)
                     output += "You find " + item_found["name"] + "."
@@ -432,10 +432,10 @@ def examine_item(item_name):
             print(output)
             break
 
-    if (output is None):
+    if output is None:
         print("The item you requested is not found in the current room.")
 
-    if (next_room and input("Do you want to go to the next room? Enter 'yes' or 'no'").strip() == 'yes'):
+    if next_room and input("Do you want to go to the next room? Enter 'yes' or 'no'").strip() == 'yes':
         play_room(next_room)
     else:
         play_room(current_room)
@@ -443,5 +443,4 @@ def examine_item(item_name):
 
 game_state = INIT_GAME_STATE.copy()
 
-play_room(living_room)
-
+start_game()
