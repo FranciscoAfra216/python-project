@@ -1,53 +1,108 @@
-# define rooms and items
+# function import from contributors
+from franciscoafra import coin_toss
+
+lives = []
+# define rooms, items and humans/animals
+house_owner = {
+    "name": "david",
+    "type": "human",
+    "riddle": "flip coin"
+}
+
+gamer_guy = {
+    "name": "gamer",
+    "type": "human",
+    "riddle": "none"
+}
+
+kid_1 = {
+    "name": "john",
+    "type": "human",
+    "riddle": "none"
+}
+
+kid_2 = {
+    "name": "sophie",
+    "type": "human",
+    "riddle": "none"
+}
+
+donkey = {
+    "name": "donkey",
+    "type": "human",
+    "riddle": "none"
+}
+
+spider = {
+    "name": "spydey",
+    "type": "animal",
+    "riddle": "none"
+}
 
 couch = {
     "name": "couch",
     "type": "furniture",
+    "riddle": "none"
 }
 
 piano = {
     "name": "piano",
     "type": "furniture",
+    "riddle": "none"
 }
 
 double_bed = {
     "name": "double bed",
     "type": "furniture",
+    "riddle": "none"
 }
 
 dresser = {
     "name": "dresser",
     "type": "furniture",
+    "riddle": "none"
 }
 
 queen_bed = {
     "name": "queen bed",
     "type": "furniture",
+    "riddle": "none"
 }
 
 dining_table = {
     "name": "dining table",
     "type": "furniture",
+    "riddle": "none"
 }
 
 door_a = {
     "name": "door a",
     "type": "door",
+    "riddle": "none"
 }
 
 door_b = {
     "name": "door b",
     "type": "door",
+    "riddle": "none"
 }
 
 door_c = {
     "name": "door c",
     "type": "door",
+    "riddle": "none"
 }
 
 door_d = {
     "name": "door d",
     "type": "door",
+    "riddle": "none"
+}
+
+door_e = {
+    "name": "door e",
+    "type": "door",
+    "riddle": "none"
 }
 
 key_a = {
@@ -74,6 +129,12 @@ key_d = {
     "target": door_d,
 }
 
+key_e = {
+    "name": "key for door e",
+    "type": "key",
+    "target": door_e,
+}
+
 game_room = {
     "name": "game room",
     "type": "room",
@@ -94,22 +155,28 @@ living_room = {
     "type": "room",
 }
 
-outside = {
-  "name": "outside"
+entrance_hall = {
+    "name": "entrance hall",
+    "type": "room",
 }
 
+outside = {
+    "name": "outside"
+}
 
-all_rooms = [game_room, bedroom_1, bedroom_2, living_room, outside]
+all_rooms = [game_room, bedroom_1, bedroom_2, living_room, outside, entrance_hall]
 
-all_doors = [door_a, door_b, door_c, door_d]
+all_doors = [door_a, door_b, door_c, door_d, door_e]
 
 # define which items/rooms are related
+
 
 object_relations = {
     "game room": [couch, piano, door_a],
     "bedroom 1": [queen_bed, door_a, door_b, door_c],
     "bedroom 2": [double_bed, dresser, door_b],
     "living room": [dining_table, door_c, door_d],
+    "entrance hall": [door_d, door_e],
     "piano": [key_a],
     "queen bed": [key_b],
     "double bed": [key_c],
@@ -117,11 +184,19 @@ object_relations = {
     "door a": [game_room, bedroom_1],
     "door b": [bedroom_1, bedroom_2],
     "door c": [bedroom_1, living_room],
-    "door d": [living_room, outside]
+    "door d": [living_room, entrance_hall],
+    "door e": [entrance_hall, outside]
+
 }
 
-
-
+# defines the position of each human/animal
+living_being = {
+    "game room": [spider, gamer_guy],
+    "bedroom 1": [kid_1],
+    "bedroom 2": [kid_2],
+    "living room": [donkey],
+    "entrance hall": [house_owner]
+}
 
 # define game state. Do not directly change this dict.
 # Instead, when a new game starts, make a copy of this
@@ -146,7 +221,8 @@ def start_game():
     """
     Start the game
     """
-    print("You wake up on a couch and find yourself in a strange house with no windows which you have never been to before.\nYou don't remember why you are here and what had happened before.\nYou feel some unknown danger is approaching and you must get out of the house, NOW!")
+    print(
+        "You wake up on a couch and find yourself in a strange house with no windows which you have never been to before.\nYou don't remember why you are here and what had happened before.\nYou feel some unknown danger is approaching and you must get out of the house, NOW!")
     play_room(game_state["current_room"])
 
 
@@ -154,21 +230,23 @@ def play_room(room):
     """
     Play a room. First check if the room being played is the target room.
     If it is, the game will end with success. Otherwise, let player either
-    explore (list all items in this room) or examine an item found here.
+    explore (list all items in this room), examine an item found here or talk to someone.
     """
     game_state["current_room"] = room
     if (game_state["current_room"] == game_state["target_room"]):
         print("Congrats! You escaped the room!")
     else:
-        print("\nYou are now in " + room["name"],"\n")
-        intended_action = input("What would you like to do? Type 'explore' or 'examine'?").strip()
+        print("\nYou are now in " + room["name"], "\n")
+        intended_action = input("What would you like to do? Type 'explore', 'examine' or 'talk'?").strip()
         if intended_action == "explore":
             explore_room(room)
             play_room(room)
         elif intended_action == "examine":
             examine_item(input("What would you like to examine?").strip())
+        elif intended_action == "talk":
+            talk_to(input("Who would you like to talk with?").strip())
         else:
-            print("Not sure what you mean. Type 'explore' or 'examine'.")
+            print("Not sure what you mean. Type 'explore', 'examine' or 'talk'.")
             play_room(room)
         linebreak()
 
@@ -178,7 +256,8 @@ def explore_room(room):
     Explore a room. List all items belonging to this room.
     """
     items = [i["name"] for i in object_relations[room["name"]]]
-    print("\nYou explore the room. This is " + room["name"] + ". You find " + ", ".join(items))
+    lives = [i["name"] for i in living_being[room["name"]]]
+    print("\nYou explore the room. This is " + room["name"], "\nYou find:\n",", ".join(lives),"\n",", ".join(items))
 
 
 def get_next_room_of_door(door, current_room):
@@ -190,6 +269,39 @@ def get_next_room_of_door(door, current_room):
     for room in connected_rooms:
         if (not current_room == room):
             return room
+
+
+def talk_to(someone):
+    """
+        Talk to a living being which can be an human or animal.
+        First make sure the intended living being belongs to the current room.
+        Then check if the human or animal is a door or furniture. Tell player "Why are you speaking to objects?
+     """
+    current_room = game_state["current_room"]
+    output = None
+
+    for item in object_relations[current_room["name"]]:
+        if (item["name"] == someone):
+            output = "You stare at " + someone + ". After 1 hour staring you see it's lifeless "
+            print(output)
+            play_room(current_room)
+    for live in living_being[current_room["name"]]:
+        if live["name"] == someone:
+            output = "You try interact with " + someone + ". "
+            print(output)
+            if live["riddle"] == "flip coin":
+                coin_toss()
+                if coin_toss() == key_e:
+                    game_state["keys_collected"].append(key_e)
+            elif live["riddle"] == "none":
+                output = "I have no riddles for you"
+                print(output)
+                play_room(current_room)
+            break
+
+    if (output is None):
+        print("The one you requested is not found in the current room.")
+        play_room(current_room)
 
 
 def examine_item(item_name):
@@ -206,6 +318,10 @@ def examine_item(item_name):
     current_room = game_state["current_room"]
     next_room = ""
     output = None
+    for live in living_being[current_room["name"]]:
+        if (live["name"] == item_name):
+            output = "You stare at " + item_name + ". Nothing happens..."
+            print(output)
 
     for item in object_relations[current_room["name"]]:
         if (item["name"] == item_name):
@@ -233,7 +349,7 @@ def examine_item(item_name):
     if (output is None):
         print("The item you requested is not found in the current room.")
 
-    if (next_room and input("Do you want to go to the next room? Ener 'yes' or 'no'").strip() == 'yes'):
+    if (next_room and input("Do you want to go to the next room? Enter 'yes' or 'no'").strip() == 'yes'):
         play_room(next_room)
     else:
         play_room(current_room)
@@ -242,3 +358,4 @@ def examine_item(item_name):
 game_state = INIT_GAME_STATE.copy()
 
 start_game()
+
