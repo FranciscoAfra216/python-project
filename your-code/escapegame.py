@@ -25,7 +25,7 @@ cowboy_texas = {
 }
 
 kid_2 = {
-    "name": "Sophie",
+    "name": "Stewie",
     "type": "human",
     "riddle": "none"
 }
