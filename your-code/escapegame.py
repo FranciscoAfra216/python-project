@@ -370,8 +370,10 @@ def talk_to(someone):
                     game_state["keys_collected"].append(key_b)
                     play_room(current_room)
                 elif success_1 == "dead":
-                    game_state["keys_collected"].clear()
-                    print("\nGame Over\n\n")
+                    print("\n---------\nGame Over\n---------\n")
+                    print("While you are unconscious, you feel being dragged to the starter room!\n")
+                    print("\nWhen you wake up, you feel that you still have your keys with you!\n")
+                    play_room(game_room)
             elif live["riddle"] == "penalty":
                 print(someone + " says:" + " I have something for you")
                 success_2 = jogo()
@@ -433,7 +435,8 @@ def examine_item(item_name):
                     output += "There isn't anything interesting about it."
             print(output)
             break
-
+    if item_name == "couch":
+        print("\nAfter examination, you find an old paper, the paper says ", "\'panenka\', maybe you can use it somewhere!")
     if output is None:
         print("The item you requested is not found in the current room.")
 
