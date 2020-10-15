@@ -1,41 +1,43 @@
 # function import from contributors
 from franciscoafra import coin_toss
 import random
+import os
+import sys
 
 lives = []
 # define rooms, items and humans/animals
 house_owner = {
-    "name": "david",
+    "name": "David",
     "type": "human",
     "riddle": "flip coin"
 }
 
-gamer_guy = {
-    "name": "gamer",
+skeleton = {
+    "name": "Skeleton",
     "type": "human",
     "riddle": "none"
 }
 
 cowboy_texas = {
-    "name": "cowboy",
+    "name": "Cowboy",
     "type": "human",
     "riddle": "gun fire"
 }
 
 kid_2 = {
-    "name": "sophie",
+    "name": "Sophie",
     "type": "human",
     "riddle": "none"
 }
 
 buffon_1 = {
-    "name": "buffon",
+    "name": "Buffon",
     "type": "human",
     "riddle": "penalty"
 }
 
 spider = {
-    "name": "spidey",
+    "name": "Spidey",
     "type": "animal",
     "riddle": "none"
 }
@@ -190,7 +192,7 @@ object_relations = {
 
 # defines the position of each human/animal
 living_being = {
-    "game room": [spider, gamer_guy],
+    "game room": [spider, skeleton],
     "bedroom 1": [cowboy_texas],
     "bedroom 2": [kid_2],
     "living room": [buffon_1],
@@ -368,8 +370,8 @@ def talk_to(someone):
                     game_state["keys_collected"].append(key_b)
                     play_room(current_room)
                 elif success_1 == "dead":
-                    print("\nGame Over")
-                    play_room(game_room)
+                    game_state["keys_collected"].clear()
+                    print("\nGame Over\n\n")
             elif live["riddle"] == "penalty":
                 print(someone + " says:" + " I have something for you")
                 success_2 = jogo()
