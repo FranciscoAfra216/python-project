@@ -28,10 +28,10 @@ kid_2 = {
     "riddle": "none"
 }
 
-donkey = {
-    "name": "donkey",
+buffon_1 = {
+    "name": "buffon",
     "type": "human",
-    "riddle": "none"
+    "riddle": "penalty"
 }
 
 spider = {
@@ -180,7 +180,6 @@ object_relations = {
     "entrance hall": [door_d, door_e],
     "piano": [key_a],
     "double bed": [key_c],
-    "dresser": [key_d],
     "door a": [game_room, bedroom_1],
     "door b": [bedroom_1, bedroom_2],
     "door c": [bedroom_1, living_room],
@@ -194,7 +193,7 @@ living_being = {
     "game room": [spider, gamer_guy],
     "bedroom 1": [cowboy_texas],
     "bedroom 2": [kid_2],
-    "living room": [donkey],
+    "living room": [buffon_1],
     "entrance hall": [house_owner]
 }
 
@@ -271,17 +270,16 @@ def coin_toss():
     else:
         print("Sadly, You guessed wrong!\n")
 
+#----------------------------------------------------------
+
 def bullet_position():
     bullet_position = random.randrange(1, 6, 1)
     return bullet_position
-
 
 def spin_chamber():
     chamber_position = random.randrange(1, 6, 1)
     return chamber_position
 
-
-# bullet_position + spin_chamber
 def fire_gun():
     rounds = 1
     print("I have a gun with 6 chambers and 1 bullet, lets try it on your head")
@@ -291,8 +289,32 @@ def fire_gun():
         else:
             print("Luckily, you got yourself a key b")
             return key_b
+#----------------------------------------------------------
+
+def jogo():
+    goal_keeper = ['left','middle','right']
+    player=[]
+    action=''
+
+    while action not in goal_keeper and action!='panenka':
+        action=input('Wild Legendary Buffon appears, you need to score a penalty to pass by him. Where do you shoot, left, middle or right? ')
+        if action not in goal_keeper and action!='panenka':
+            print('AIM AT THE NET')
+    gr_action=random.choice(goal_keeper)
+    player.append(action)
+
+    if player[0]=='panenka':
+        print('Buffon dropped a key d while running away!')
+        return key_d
+    else:
+        if gr_action==player[0]:
+            print('Buffon got lucky! Try again')
+        else:
+            print('GOAL!!!\nTime to celebrate\nLook Buffon is running away!\nYou see him dropping a key d!\nWe should carry our journey')
+            return key_d
 
 ### RIDDLES END###
+
 def explore_room(room):
     """
     Explore a room. List all items belonging to this room.
@@ -348,6 +370,12 @@ def talk_to(someone):
                 elif success_1 == "dead":
                     print("\nGame Over")
                     play_room(game_room)
+            elif live["riddle"] == "penalty":
+                print(someone + " says:" + " I have something for you")
+                success_2 = jogo()
+                if success_2 == key_d:
+                    game_state["keys_collected"].append(key_d)
+                    play_room(current_room)
                 else:
                     play_room(current_room)
 
