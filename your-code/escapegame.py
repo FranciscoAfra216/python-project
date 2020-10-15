@@ -7,7 +7,7 @@ import sys
 lives = []
 # define rooms, items and humans/animals
 house_owner = {
-    "name": "David",
+    "name": "Al Capone",
     "type": "human",
     "riddle": "flip coin"
 }
@@ -448,4 +448,4 @@ def examine_item(item_name):
 
 game_state = INIT_GAME_STATE.copy()
 
-start_game()
+play_room(entrance_hall)
