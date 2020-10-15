@@ -57,3 +57,24 @@ def coin_toss():
 
     else:
         print("Sadly, You guessed wrong!\n")
+
+
+def bullet_position():
+    bullet_position = random.randrange(1, 6, 1)
+    return bullet_position
+
+
+def spin_chamber():
+    chamber_position = random.randrange(1, 6, 1)
+    return chamber_position
+
+
+# bullet_position + spin_chamber
+def fire_gun():
+    rounds = 1
+    print("Round:", rounds)
+    if rounds < 2:
+        if bullet_position() == spin_chamber():
+            return "You´re dead. GAME OVER!"
+        else:
+            return key_a

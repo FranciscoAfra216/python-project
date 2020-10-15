@@ -16,10 +16,10 @@ gamer_guy = {
     "riddle": "none"
 }
 
-kid_1 = {
-    "name": "john",
+cowboy_texas = {
+    "name": "cowboy",
     "type": "human",
-    "riddle": "none"
+    "riddle": "gun fire"
 }
 
 kid_2 = {
@@ -35,7 +35,7 @@ donkey = {
 }
 
 spider = {
-    "name": "spydey",
+    "name": "spidey",
     "type": "animal",
     "riddle": "none"
 }
@@ -179,7 +179,6 @@ object_relations = {
     "living room": [dining_table, door_c, door_d],
     "entrance hall": [door_d, door_e],
     "piano": [key_a],
-    "queen bed": [key_b],
     "double bed": [key_c],
     "dresser": [key_d],
     "door a": [game_room, bedroom_1],
@@ -193,7 +192,7 @@ object_relations = {
 # defines the position of each human/animal
 living_being = {
     "game room": [spider, gamer_guy],
-    "bedroom 1": [kid_1],
+    "bedroom 1": [cowboy_texas],
     "bedroom 2": [kid_2],
     "living room": [donkey],
     "entrance hall": [house_owner]
@@ -251,7 +250,7 @@ def play_room(room):
             print("Not sure what you mean. Type 'explore', 'examine' or 'talk'.")
             play_room(room)
         linebreak()
-
+### RIDDLES ###
 def coin_toss():
     player_choice = input("It's time to flip a coin!\nChoose heads or tails?")
     player_choice = player_choice.lower()
@@ -272,6 +271,28 @@ def coin_toss():
     else:
         print("Sadly, You guessed wrong!\n")
 
+def bullet_position():
+    bullet_position = random.randrange(1, 6, 1)
+    return bullet_position
+
+
+def spin_chamber():
+    chamber_position = random.randrange(1, 6, 1)
+    return chamber_position
+
+
+# bullet_position + spin_chamber
+def fire_gun():
+    rounds = 1
+    print("I have a gun with 6 chambers and 1 bullet, lets try it on your head")
+    if rounds < 2:
+        if bullet_position() == spin_chamber():
+            return "dead"
+        else:
+            print("Luckily, you got yourself a key b")
+            return key_b
+
+### RIDDLES END###
 def explore_room(room):
     """
     Explore a room. List all items belonging to this room.
@@ -311,14 +332,27 @@ def talk_to(someone):
             output = "You say Hi to " + someone + ". "
             print(output)
             if live["riddle"] == "flip coin":
+                print(someone + " says:" + " I have something for you")
                 success = coin_toss()
                 if success == key_e:
                     game_state["keys_collected"].append(key_e)
                     play_room(current_room)
                 else:
                     play_room(current_room)
+            elif live["riddle"] == "gun fire":
+                print(someone + " says:" + " I have something for you")
+                success_1 = fire_gun()
+                if success_1 == key_b:
+                    game_state["keys_collected"].append(key_b)
+                    play_room(current_room)
+                elif success_1 == "dead":
+                    print("\nGame Over")
+                    play_room(game_room)
+                else:
+                    play_room(current_room)
+
             elif live["riddle"] == "none":
-                output = "I have no riddles for you"
+                output = someone +" says:" + " I have no riddles for you"
                 print(output)
                 play_room(current_room)
             break
@@ -381,5 +415,5 @@ def examine_item(item_name):
 
 game_state = INIT_GAME_STATE.copy()
 
-play_room(entrance_hall)
+start_game()
 
