@@ -297,7 +297,7 @@ def jogo():
     action=''
 
     while action not in goal_keeper and action!='panenka':
-        action=input('Wild Legendary Buffon appears, you need to score a penalty to pass by him. Where do you shoot, left, middle or right? ')
+        action=input('Carefull this is a legendary Buffon, you need to score a penalty to pass by him. Where do you shoot, left, middle or right? ')
         if action not in goal_keeper and action!='panenka':
             print('AIM AT THE NET')
     gr_action=random.choice(goal_keeper)
@@ -443,5 +443,5 @@ def examine_item(item_name):
 
 game_state = INIT_GAME_STATE.copy()
 
-start_game()
+play_room(living_room)
 
