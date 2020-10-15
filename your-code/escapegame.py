@@ -24,7 +24,7 @@ cowboy_texas = {
     "riddle": "gun fire"
 }
 
-kid_2 = {
+stewie_g = {
     "name": "Stewie",
     "type": "human",
     "riddle": "none"
@@ -194,7 +194,7 @@ object_relations = {
 living_being = {
     "game room": [spider, skeleton],
     "bedroom 1": [cowboy_texas],
-    "bedroom 2": [kid_2],
+    "bedroom 2": [stewie_g],
     "living room": [buffon_1],
     "entrance hall": [house_owner]
 }
